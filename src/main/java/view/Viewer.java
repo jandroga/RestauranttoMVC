@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 
 public class Viewer extends Canvas implements Runnable{
 
-    private Images images;
     private MyTask mt;
+    private final Images images;
     private final BufferedImage chefImage;
     private final BufferedImage clientImage;
     private final BufferedImage fondo;
@@ -19,9 +19,6 @@ public class Viewer extends Canvas implements Runnable{
     private final int chefX = 300;
     private final int clientY = 380;
     private final int clientX = 250;
-    private int chefSize;
-    private int foodSize;
-    private int clientSize;
 
     public Viewer(Images images, int width, int height, MyTask mt){
         this.images = images;
@@ -33,12 +30,6 @@ public class Viewer extends Canvas implements Runnable{
         setSize(width, height);
         setVisible(true);
         repaint();
-    }
-
-    public void updateState(int chefSize, int clientSize, int foodSize){
-        this.chefSize = chefSize;
-        this.clientSize = clientSize;
-        this.foodSize = foodSize;
     }
 
     @Override
@@ -55,12 +46,6 @@ public class Viewer extends Canvas implements Runnable{
         for (int i = 0; i < mt.getT().getContador(); i++) {
             g.drawImage(food,chefX+(100*i),chefY-(100),null);
         }
-    }
-
-    private void setActors() {
-        chefSize = mt.getChefsTotals();
-        clientSize = mt.getClientsTotals();
-        foodSize = mt.getT().getContador();
     }
 
     @Override
