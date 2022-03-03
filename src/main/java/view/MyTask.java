@@ -22,8 +22,8 @@ public class MyTask extends JFrame {
     public int height;
     private Table t = new Table(this);
     private Images images = new Images();
-    public int clientsTotals;
-    public int chefsTotals;
+    private int clientsTotals;
+    private int chefsTotals;
     private String id;
     private int speed;
     private Viewer v;
@@ -35,12 +35,11 @@ public class MyTask extends JFrame {
         setSize(width, height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+        v = new Viewer(images,width-100, height-200, this);
         Thread vThread = new Thread(v);
         vThread.start();
         ControlPanel cp = new ControlPanel(this);
         GridBagConstraints c = new GridBagConstraints();
-        v = new Viewer(images,width/2, height/2, this);
         c.fill = 1;
         c.gridx = 0;
         c.gridy = 0;
@@ -59,27 +58,32 @@ public class MyTask extends JFrame {
     public synchronized int getClientsTotals(){
         return clientsTotals;
     }
-
-
+    public synchronized int getChefsTotals(){
+        return chefsTotals;
+    }
 
     public void newClient(){
-        ++clientsTotals;
         speed = (int)Math.floor((Math.random()*(12-6+1)+6))*1000;
         this.id = Integer.toString(clientsTotals);
         System.out.println("Velocitat del nou client: " +speed+ ", id: "+id);
         Client client = new Client(id, speed, t);
         new Thread(client).start();
-        v.repaint();
+        addClient();
     }
 
     public void newChef(){
-        ++chefsTotals;
         speed = (int)Math.floor((Math.random()*(12-6+1)+6))*1000;
         this.id = Integer.toString(chefsTotals);
         System.out.println("Velocitat del nou chef: " +speed+ ", id: "+id);
         Chef chef = new Chef(id, speed, t);
         new Thread(chef).start();
-        v.repaint();
+        addChef();
+    }
+    public synchronized void addChef(){
+        chefsTotals++;
+    }
+    public synchronized void addClient(){
+        clientsTotals++;
     }
 
     @Override
@@ -96,5 +100,13 @@ public class MyTask extends JFrame {
 
     public static void main(String[] args) {
         new MyTask();
+    }
+
+    public synchronized void dropClient() {
+        clientsTotals--;
+    }
+
+    public Viewer getV() {
+        return v;
     }
 }

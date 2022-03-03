@@ -35,9 +35,8 @@ public class Table {
         if (foodList.size() > 0) {
             foodList.remove(foodList.size()-1);
             System.out.println("Ha agafat menjar es " + id);
+            mt.dropClient();
             Thread.currentThread().stop();
-            System.out.println(mt.clientsTotals);
-            System.out.println(mt.getClientsTotals());
         }else{
             System.out.println("TA BASÍO");
             System.out.println(Thread.currentThread().getName());

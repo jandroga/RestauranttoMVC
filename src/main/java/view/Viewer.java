@@ -2,6 +2,8 @@ package view;
 
 import model.Images;
 
+import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -33,25 +35,32 @@ public class Viewer extends Canvas implements Runnable{
         repaint();
     }
 
+    public void updateState(int chefSize, int clientSize, int foodSize){
+        this.chefSize = chefSize;
+        this.clientSize = clientSize;
+        this.foodSize = foodSize;
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(fondo,0,0,null);
-        System.out.println("Uepa aktualisando");
-        chefSize = mt.chefsTotals;
-        clientSize = mt.getClientsTotals();
-        foodSize = mt.getT().getContador();
-        //Passar a col·lecció i fer-ho segons es .length, un foreach si no
-        for (int i = 0; i < chefSize; i++) {
+
+        for (int i = 0; i < mt.getChefsTotals(); i++) {
             g.drawImage(chefImage,chefX+(100*i), chefY,null);
         }
-        for (int i = 0; i < clientSize; i++) {
+        for (int i = 0; i < mt.getClientsTotals(); i++) {
             g.drawImage(clientImage,clientX+(100*i), clientY,null);
         }
-        System.out.println(mt.getT().getContador());
-        for (int i = 0; i < foodSize; i++) {
+        for (int i = 0; i < mt.getT().getContador(); i++) {
             g.drawImage(food,chefX+(100*i),chefY-(100),null);
         }
+    }
+
+    private void setActors() {
+        chefSize = mt.getChefsTotals();
+        clientSize = mt.getClientsTotals();
+        foodSize = mt.getT().getContador();
     }
 
     @Override
@@ -60,7 +69,7 @@ public class Viewer extends Canvas implements Runnable{
             if (this.getGraphics() != null) {
                 paint(this.getGraphics());
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(200);
                 } catch (Exception e) {
                     System.out.println(e);
                 }
